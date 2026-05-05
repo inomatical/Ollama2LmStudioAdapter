@@ -1,0 +1,161 @@
+@Ollama2LmStudioAdapter.Api_HostAddress = http://localhost:5095
+
+GET {{Ollama2LmStudioAdapter.Api_HostAddress}}/
+Accept: application/json
+
+###
+
+GET {{Ollama2LmStudioAdapter.Api_HostAddress}}/api/tags
+Accept: application/json
+
+###
+
+POST {{Ollama2LmStudioAdapter.Api_HostAddress}}/api/generate
+Content-Type: application/json
+
+{
+	"model": "local-model",
+	"prompt": "Write one sentence about adapters.",
+	"stream": false,
+	"options": {
+		"temperature": 0.2,
+		"num_predict": 64
+	}
+}
+
+###
+
+POST {{Ollama2LmStudioAdapter.Api_HostAddress}}/api/generate
+Content-Type: application/json
+
+{
+	"model": "local-model",
+	"prompt": "Count from one to five.",
+	"stream": true
+}
+
+###
+
+POST {{Ollama2LmStudioAdapter.Api_HostAddress}}/api/chat
+Content-Type: application/json
+
+{
+	"model": "local-model",
+	"stream": false,
+	"messages": [
+		{
+			"role": "system",
+			"content": "You are concise."
+		},
+		{
+			"role": "user",
+			"content": "Explain what this adapter does in one sentence."
+		}
+	]
+}
+
+###
+
+POST {{Ollama2LmStudioAdapter.Api_HostAddress}}/api/chat
+Content-Type: application/json
+
+{
+	"model": "local-model",
+	"stream": false,
+	"messages": [
+		{
+			"role": "user",
+			"content": "What is the temperature in Berlin right now?"
+		}
+	],
+	"tools": [
+		{
+			"type": "function",
+			"function": {
+				"name": "get_temperature",
+				"description": "Get the current temperature for a city.",
+				"parameters": {
+					"type": "object",
+					"properties": {
+						"city": {
+							"type": "string",
+							"description": "City name"
+						}
+					},
+					"required": ["city"]
+				}
+			}
+		}
+	]
+}
+
+###
+
+POST {{Ollama2LmStudioAdapter.Api_HostAddress}}/api/chat
+Content-Type: application/json
+
+{
+	"model": "local-model",
+	"stream": false,
+	"messages": [
+		{
+			"role": "user",
+			"content": "What is the temperature in Berlin right now?"
+		},
+		{
+			"role": "assistant",
+			"tool_calls": [
+				{
+					"type": "function",
+					"function": {
+						"index": 0,
+						"name": "get_temperature",
+						"arguments": {
+							"city": "Berlin"
+						}
+					}
+				}
+			]
+		},
+		{
+			"role": "tool",
+			"tool_name": "get_temperature",
+			"content": "18C"
+		}
+		],
+	"tools": [
+		{
+			"type": "function",
+			"function": {
+				"name": "get_temperature",
+				"description": "Get the current temperature for a city.",
+				"parameters": {
+					"type": "object",
+					"properties": {
+						"city": {
+							"type": "string",
+							"description": "City name"
+						}
+					},
+					"required": ["city"]
+				}
+			}
+		}
+	]
+}
+
+###
+
+POST {{Ollama2LmStudioAdapter.Api_HostAddress}}/api/chat
+Content-Type: application/json
+
+{
+	"model": "local-model",
+	"stream": true,
+	"messages": [
+		{
+			"role": "user",
+			"content": "Give me three short bullet points about local inference."
+		}
+	]
+}
