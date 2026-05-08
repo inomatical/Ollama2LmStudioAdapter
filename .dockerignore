@@ -1,0 +1,34 @@
+# Build artifacts
+**/bin/
+**/obj/
+
+# IDE & editor files
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# NuGet
+nuget.config
+*.nupkg
+**/packages/*
+!**/packages/build/
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Git
+.git
+.gitignore

@@ -38,6 +38,23 @@ Configure LM Studio in `src/Ollama2LmStudioAdapter.Api/appsettings.json` or envi
 
 LM Studio must have its local server enabled.
 
+## Running the adapter
+
+### Build and run the adapter:
+
+```bash
+dotnet run --project src/Ollama2LmStudioAdapter.Api/Ollama2LmStudioAdapter.Api.csproj
+```
+
+### From Docker:
+
+Create a Docker image and run it, forwarding port 5095 to the adapter's internal port 80:
+
+```bash
+docker build -t ollama2lmstudioadapter .
+docker run -p 5095:80 ollama2lmstudioadapter
+```
+
 ## Streaming behavior
 
 The adapter consumes LM Studio Server-Sent Events and emits Ollama-style newline-delimited JSON. Each streaming request ends with a final object where `done` is `true`.
